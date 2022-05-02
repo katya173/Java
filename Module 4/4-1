@@ -1,1 +1,87 @@
+class Fraction {
+    private int numerator;
+    private int denominator;
 
+    public Fraction(int numerator) {
+        this.numerator = numerator;
+        this.denominator = 1;
+    }
+    public Fraction(int numerator, int denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
+    }
+    static int nod(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return nod(b, a % b);
+    }
+    static int nok(int a, int b) {
+        return a * b / nod(a, b);
+    }
+
+    public static Fraction add(Fraction a, Fraction b) {
+        int cDenominator = nok(a.denominator, b.denominator);
+        int cNumerator = a.numerator * (cDenominator / a.denominator) +
+                b.numerator * (cDenominator / b.denominator);
+        Fraction c = new Fraction((cNumerator/nod(cNumerator, cDenominator)),
+                (cDenominator/nod(cNumerator, cDenominator)));
+        return c;
+    }
+
+    public static Fraction sub(Fraction a, Fraction b) {
+        int cDenominator = nok(a.denominator, b.denominator);
+        int cNumerator = a.numerator * (cDenominator / a.denominator) -
+                b.numerator * (cDenominator / b.denominator);
+        Fraction c = new Fraction((cNumerator/nod(cNumerator, cDenominator)),
+                (cDenominator/nod(cNumerator, cDenominator)));
+        return c;
+    }
+    public static Fraction mul(Fraction a, Fraction b) {
+        int cNumerator = a.numerator * b.numerator;
+        int cDenominator = a.denominator * b.denominator;
+        Fraction c = new Fraction((cNumerator/nod(cNumerator, cDenominator)),
+                (cDenominator/nod(cNumerator, cDenominator)));
+        return c;
+    }
+    public static Fraction div(Fraction a, Fraction b) {
+        int cNumerator = a.numerator * b.denominator;
+        int cDenominator = a.denominator * b.numerator;
+        Fraction c = new Fraction((cNumerator/nod(cNumerator, cDenominator)),
+                (cDenominator/nod(cNumerator, cDenominator)));
+        return c;
+    }
+    public static void equal(Fraction a, Fraction b) {
+        if((a.numerator * (nok(a.denominator, b.denominator)) / a.denominator) ==
+                (b.numerator * (nok(a.denominator, b.denominator) / b.denominator)))
+            System.out.println("Fraction a equal to Fraction b");
+        else {
+            if((a.numerator * (nok(a.denominator, b.denominator)) / a.denominator) >
+                    (b.numerator * (nok(a.denominator, b.denominator) / b.denominator)))
+                System.out.println("Fraction a bigger than Fraction b");
+            else {
+                System.out.println("Fraction a lesser than Fraction b");
+            }
+        }
+    }
+
+    public void show() {
+        System.out.printf("%d / %d", numerator, denominator);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+//        Fraction a = new Fraction(1,6);
+//        Fraction b = new Fraction(2,6);
+//        Fraction c = Fraction.add(a, b);
+//        c.show();
+//        Fraction d = Fraction.sub(a, b);
+//        d.show();
+//        Fraction e = Fraction.mul(a, b);
+//        e.show();
+//        Fraction f = Fraction.div(a, b);
+//        f.show();
+//        Fraction.equal(a, b);
+    }
+}
