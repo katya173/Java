@@ -1,1 +1,165 @@
+class Matrix {
+    private static int rows;
+    private static int columns;
+    private int[][] matrix;
 
+    public Matrix() {
+        this.rows    = 1;
+        this.columns = 1;
+        this.matrix  = new int[rows][columns];
+    }
+    public Matrix(int rows, int columns) {
+        this.rows    = rows;
+        this.columns = columns;
+        this.matrix  = new int[rows][columns];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = (int)(Math.random()*10);
+            }
+        }
+    }
+
+    public Matrix(int size) {
+        this.rows = this.columns = size;
+        this.matrix = new int[size][size];
+    }
+
+    public Matrix(int[][] matrix) {
+        this.rows = matrix.length;
+        this.columns = matrix[0].length;
+        this.matrix = matrix;
+    }
+
+    public static final Matrix add(Matrix matrix1, Matrix matrix2) {
+        Matrix matrixsum = new Matrix(matrix1.rows, matrix1.columns);
+        for(int i = 0; i < matrix1.rows; i++) {
+            for(int j = 0; j < matrix1.columns; j++) {
+                matrixsum.matrix[i][j] = matrix1.matrix[i][j] + matrix2.matrix[i][j];
+            }
+        }
+        return matrixsum;
+    }
+
+    public static final Matrix mul(Matrix matrix1, Matrix matrix2) {
+        int mx1 = matrix1.rows;
+        int mx2_0 = matrix2.columns;
+        int mx2 = matrix2.rows;
+        Matrix matrixmul = new Matrix(mx1, mx2_0);
+        for(int i = 0; i < mx1; i++) {
+            for(int j = 0; j < mx2_0; j++) {
+                for(int k = 0; k < mx2; k++) {
+                    matrixmul.matrix[i][j] += matrix1.matrix[i][k] * matrix2.matrix[k][j];
+                }
+            }
+        }
+        return matrixmul;
+    }
+    public static Matrix transpose(Matrix matrix) {
+        Matrix matrixtransp = new Matrix(matrix.columns, matrix.rows);
+        for (int i = 0; i < matrixtransp.rows; i++) {
+            for (int j = 0; j < matrixtransp.columns; j++) {
+                matrixtransp.matrix[j][i] = matrix.matrix[i][j];
+            }
+        }
+        return matrixtransp;
+    }
+
+    public static void equal(Matrix matrix1, Matrix matrix2) {
+        int flag = 1;
+        for(int i = 0; i < matrix1.rows; i++) {
+            for(int j = 0; j < matrix1.columns; j++) {
+//                if(matrix1[i].length != matrix2[i].length) {
+                if(matrix1.matrix[i].length != matrix2.matrix[i].length) {
+                    flag = 0;
+                    break;
+                }
+                if(matrix1.matrix[i][j] != matrix2.matrix[i][j]) {
+                    flag = 0;
+                    break;
+                }
+            }
+        }
+        if(flag == 1) {
+            System.out.println("Matrix1 equal Matrix2");
+        }
+        else {
+            System.out.println("Matrix1 not equal Matrix2");
+        }
+    }
+
+    public final void show() {
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < columns; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+}
+
+public class Main {
+    public static void equal(int[][] matrix1, int[][] matrix2) {
+        int flag = 1;
+        for(int i = 0; i < matrix1.length; i++) {
+            for(int j = 0; j < matrix1[0].length; j++) {
+                if(matrix1[i].length != matrix2[i].length) {
+                    flag = 0;
+                    break;
+                }
+                if(matrix1[i][j] != matrix2[i][j]) {
+                    flag = 0;
+                    break;
+                }
+            }
+        }
+        if(flag == 1) {
+            System.out.println("Matrix1 equal Matrix2");
+        }
+        else {
+            System.out.println("Matrix1 not equal Matrix2");
+        }
+    }
+
+    public static void main(String[] args) {
+//        Matrix a = new Matrix(2, 2);
+//        Matrix b = new Matrix(3, 2);
+//        a.show();
+//        b.show();
+//        try {
+//            Matrix.add(a, b).show();
+//        }
+//        catch (Exception ex){
+//            System.out.println(ex.getMessage());
+//        }
+
+//        Matrix a = new Matrix(2, 3);
+//        Matrix b = new Matrix(3, 2);
+//        a.show();
+//        b.show();
+//        try {
+//            Matrix.mul(a, b).show();
+//        }
+//        catch (Exception ex){
+//            System.out.println(ex.getMessage());
+//        }
+//        Matrix a = new Matrix(3, 2);
+//        a.show();
+//        try {
+//            Matrix.transpose(a).show();
+//        }
+//        catch (Exception ex){
+//            System.out.println(ex.getMessage());
+//        }
+//        Matrix a = new Matrix(1, 2);
+//        Matrix b = new Matrix(1, 2);
+//        a.show();
+//        b.show();
+//        try {
+//            Matrix.equal(a, b);
+//        }
+//        catch (Exception ex){
+//            System.out.println(ex.getMessage());
+//        }
+    }
+}
