@@ -99,28 +99,6 @@ class Matrix {
 }
 
 public class Main {
-    public static void equal(int[][] matrix1, int[][] matrix2) {
-        int flag = 1;
-        for(int i = 0; i < matrix1.length; i++) {
-            for(int j = 0; j < matrix1[0].length; j++) {
-                if(matrix1[i].length != matrix2[i].length) {
-                    flag = 0;
-                    break;
-                }
-                if(matrix1[i][j] != matrix2[i][j]) {
-                    flag = 0;
-                    break;
-                }
-            }
-        }
-        if(flag == 1) {
-            System.out.println("Matrix1 equal Matrix2");
-        }
-        else {
-            System.out.println("Matrix1 not equal Matrix2");
-        }
-    }
-
     public static void main(String[] args) {
 //        Matrix a = new Matrix(2, 2);
 //        Matrix b = new Matrix(3, 2);
