@@ -1,1 +1,213 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
 
+class MyException extends Exception {
+    public MyException(String message) {
+        super(message);
+    }
+}
+
+abstract class Figure {
+    public double x, y;
+    public static Figure rand(double x, double y) {
+        Random rand = new Random();
+        Figure figure;
+        if (rand.nextBoolean())
+            figure = new Square(x);
+        else if (rand.nextBoolean())
+            figure = new Cube(x);
+        else if (rand.nextBoolean())
+            figure = new Rectangle(x, y);
+        else if (rand.nextBoolean())
+            figure = new Triangle(x, y);
+        else if (rand.nextBoolean())
+            figure = new Circle(x);
+        else
+            figure = new Sphere(x);
+        return figure;
+    }
+    public abstract double P();
+    public abstract double S();
+    public abstract double V();
+    Figure(double x) {
+        this.x = x;
+    }
+    Figure(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void show() {
+        System.out.printf("Figure: %s", getClass().getSuperclass());
+    }
+}
+
+class Square extends Figure {
+    Square(double x){
+        super(x);
+    }
+    @Override
+    public double P() {
+        return x * 4;
+    }
+    @Override
+    public double S() {
+        return x * x;
+    }
+    @Override
+    public double V() {
+        return 0;
+    }
+}
+
+class Cube extends Figure {
+    Cube(double x) {
+        super(x);
+    }
+    @Override
+    public double P() {
+        return x * 12;
+    }
+    @Override
+    public double S() {
+        return x * x * 6;
+    }
+    @Override
+    public double V() {
+        return x * x * x;
+    }
+}
+
+class Rectangle extends Figure {
+    Rectangle(double x, double y) {
+        super(x, y);
+    }
+    @Override
+    public double P() {
+        return x * 2 + y * 2;
+    }
+    @Override
+    public double S() {
+        return x * y;
+    }
+    @Override
+    public double V() {
+        return 0;
+    }
+}
+
+class Triangle extends Figure {
+    private double z = Math.sqrt(x * x + y * y);
+
+    Triangle(double x, double y) {
+        super(x, y);
+        this.z = z;
+    }
+    @Override
+    public double P() {
+        return x + y + z;
+    }
+    @Override
+    public double S() {
+        return (x * y) / 2;
+    }
+    @Override
+    public double V() {
+        return 0;
+    }
+}
+
+class Circle extends Figure {
+    Circle(double x) {
+        super(x);
+    }
+    @Override
+    public double P() {
+        return 2 * Math.PI * x;
+    }
+    @Override
+    public double S() {
+        return Math.PI * x * x;
+    }
+    @Override
+    public double V() {
+        return 0;
+    }
+}
+
+class Sphere extends Figure {
+    Sphere(double x){
+        super(x);
+    }
+    @Override
+    public double P() {
+        return 0;
+    }
+    @Override
+    public double S() {
+        return Math.PI * x * x * 4;
+    }
+    @Override
+    public double V() {
+        return 4 / 3 * Math.PI * x * x * x;
+    }
+}
+
+
+public class Main {
+    public static void start () throws MyException {
+        System.out.print("Set the dimension of the array: ");
+        int Figurearraydimension = new Scanner(System.in).nextInt();
+        System.out.print("Enter the size of the larger side or radius: ");
+        double x = new Scanner(System.in).nextInt();
+        System.out.print("Enter the size of the smaller side: ");
+        double y = new Scanner(System.in).nextInt();
+        if(x < 0 || y <0) {
+            throw new MyException("A negative side is entered");
+        }
+        Figure [] fig = new Figure[Figurearraydimension];
+        System.out.println("Dimension of the array = " + fig.length);
+        double maxfig = 0;
+        ArrayList<Figure> figmaxarea = new ArrayList<>();
+        for (int i = 0; i < Figurearraydimension; i++) {
+            fig[i] = Figure.rand(x, y);
+            if (fig[i].S() > maxfig) {
+                figmaxarea.clear();
+            }
+            if(fig[i].S() >= maxfig) {
+                figmaxarea.add(fig[i]);
+                maxfig = fig[i].S();
+            }
+            System.out.println("Area of " + fig[i] + " " + fig[i].S());
+        }
+        System.out.println(figmaxarea);
+        try(FileWriter out = new FileWriter("figmaxarea.txt", false)) {
+            out.write(String.valueOf(figmaxarea));
+            out.flush();
+        }
+        catch(IOException ex){
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            start();
+        }
+        catch (NegativeArraySizeException ex) {
+            System.out.println(ex.getMessage());
+        }
+        catch (NumberFormatException ex) {
+            System.out.println(ex.getMessage());
+        }
+        catch (InputMismatchException ex) {
+            System.out.println(ex.getMessage());
+        }
+        catch (MyException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+}
