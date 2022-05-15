@@ -1,1 +1,174 @@
+// TODO выдает ArrayStoreException. При попытке пофиксить заполнение матрицы расположения фигур циклом вместо метода, порождает кучу ошибок. Полномочия всё.
 
+import java.util.Arrays;
+
+abstract class ChessFigure {
+    public static Board board;
+    public static int x_start;
+    public static int y_start;
+
+    public ChessFigure(int x_start, int y_start, Board board) {
+        this.board = board;
+        this.x_start = setStart(board).cellGetX();
+        this.y_start = setStart(board).cellGetY();
+        board.changeStatusCell(board, x_start, y_start);
+    }
+
+    public int getFigureX() {
+        this.x_start = ChessFigure.x_start;
+        return x_start;
+    }
+
+    public int getFigureY() {
+        this.y_start = ChessFigure.x_start;
+        return y_start;
+    }
+    public static Cell setStart (Board board) {
+        Cell startCell = null;
+        while (true) {
+            int x = (int)(Math.random() * 7);
+            int y = (int)(Math.random() * 7);
+            if (board.checkFreeCell(board, x, y)) {
+                startCell = new Cell(x, y);
+            }
+            break;
+        }
+        return startCell;
+    }
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        return board.checkFreeCell(board, x_end, y_end);
+    }
+}
+
+
+class Pawn extends ChessFigure {
+    Pawn() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return ((y == 1) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+
+class Knight extends ChessFigure {
+    Knight() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return ((x * y == 2) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+
+class Bishop extends ChessFigure {
+    Bishop() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return ((x == y) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+
+class Rook extends ChessFigure {
+    Rook() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return ((x == 0 || y == 0) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+
+class Queen extends ChessFigure {
+    Queen() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return (((x == 0 || y == 0) || (x == y)) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+
+class King extends ChessFigure {
+    King() {
+        super(x_start, y_start, board);
+    }
+
+    @Override
+    public boolean step (Board board, int x_start, int y_start, int x_end, int y_end) {
+        int x = Math.abs(x_start - x_end);
+        int y = Math.abs(y_start - y_end);
+        return ((x >= 1 || y >= 1) && (board.checkFreeCell(board, x_end, y_end)));
+    }
+}
+
+class Board {
+    static int[][] board = new int[8][8];
+    Board() {
+//        for (int i = 0; i < board.length; i++) {
+//            for (int j = 0; j < board[0].length; j++) {
+//                board[i][j] = 0;
+        Arrays.fill(board, 0);
+
+    }
+    public boolean checkFreeCell (Board board, int x, int y) {
+        return Board.board[x][y] == 0;
+    }
+    public int changeStatusCell (Board board, int x, int y) {
+        return (Board.board[x][y] = 1 - Board.board[x][y]);
+    }
+}
+
+class Cell {
+    private static int x;
+    private static int y;
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    public int cellGetX () {
+        this.x = Cell.x;
+        return x;
+    }
+    public int cellGetY () {
+        this.y = Cell.y;
+        return y;
+    }
+}
+
+
+
+public class Main {
+    static void start() {
+        Board board = new Board();
+    }
+
+    public static void main(String[] args) {
+        start();
+//        Pawn pawn = new Pawn();
+//        pawn.getFigureX();
+//        pawn.getFigureY();
+    }
+}
